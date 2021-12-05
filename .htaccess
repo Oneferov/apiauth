@@ -1,0 +1,27 @@
+Options +FollowSymLinks
+IndexIgnore */*
+RewriteEngine on
+
+RewriteCond %{SERVER_PORT} !^443$
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [QSA,R=301,L]
+
+#enable HTTPS only
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+
+#remove WWW
+#RewriteCond %{HTTP_HOST} ^www\.site\.ru$ [NC]
+#RewriteRule ^(.*)$ https://site.ru/$1 [R=301,L]
+
+RewriteCond %{REQUEST_URI} !^/(web)
+RewriteRule ^assets/(.*) /web/assets/$1 [L]
+RewriteRule ^css/(.*) /web/css/$1 [L]
+RewriteRule ^scss/(.*) /web/scss/$1 [L]
+RewriteRule ^js/(.*) /web/js/$1 [L]
+RewriteRule ^img/(.*) /web/img/$1 [L]
+RewriteRule ^fonts/(.*) /web/fonts/$1 [L]
+RewriteRule (.*) /web/$1
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /web/index.php
